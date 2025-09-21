@@ -144,7 +144,7 @@ ggplot(early_january_weather, aes ( x = time_hour ,  y = temp , color = humid ))
 ![](HW-1_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
-ggsave("scatter_plot.png", dpi = 600, path = "~/p8105_hw1")
+ggsave("scatter_plot.png", dpi = 600, path = "~/Desktop/💻/按课程类型分类/P8105 Data Science 1/Homeworks/p8105_hw1")
 ```
 
     ## Saving 7 x 5 in image
@@ -157,14 +157,14 @@ Create a dataframe
 
 ``` r
 data_df = tibble(
-  norm_sample= rnorm(10), # A random sample of size 10 from a standard Normal distribution
+  norm_sample = rnorm(10), # A random sample of size 10 from a standard Normal distribution
   
-  vec_logical = c( TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE), 
-  # A logical vector indicating whether elements of the sample are greater than 0
+  vec_logical = rnorm(10) > 0, # A logical vector indicating whether elements of the sample are       greater than 0
   
-  vec_char = c("Alvin", "Sunny", "Justin", "Jeff", "Sky", "Rachel", "Maria", "Susan", "Jordan", "Morgan"), # A character vector of length 10
+  vec_char = letters[1:10], # A character vector of length 10
   
-  vec_factor = factor(c("male", "male", "male", "male", "male", "female", "female", "female", "male", "female"))) # A factor vector of length 10, with 3 different factor “levels”
+  vec_factor = factor(rep(c("Super", "Modest", "Inferior"), length.out = 10)) # A factor vector of length 10, with 3   different factor “levels”
+)
 ```
 
 ## Q2: Try to take the mean of each variable in your dataframe. What works and what doesn’t?
@@ -175,13 +175,13 @@ Taking the mean of a variable in a dataframe by using the pull function
 mean(data_df |>  pull(norm_sample)) # Value is working
 ```
 
-    ## [1] 0.09090498
+    ## [1] -0.05780696
 
 ``` r
 mean(data_df |>  pull(vec_logical)) # Logical is working
 ```
 
-    ## [1] 0.6
+    ## [1] 0.3
 
 ``` r
 mean(data_df |>  pull(vec_char)) # Character is not working
@@ -212,7 +212,7 @@ variables
 as.numeric(data_df |>  pull(vec_logical)) # Logical is working
 ```
 
-    ##  [1] 1 1 0 1 1 1 1 0 0 0
+    ##  [1] 0 0 1 0 0 0 0 1 1 0
 
 ``` r
 as.numeric(data_df |>  pull(vec_char)) # Character is not working (NA returns)
@@ -226,7 +226,7 @@ as.numeric(data_df |>  pull(vec_char)) # Character is not working (NA returns)
 as.numeric(data_df |>  pull(vec_factor)) # Factor is partially working (return internal encoding)
 ```
 
-    ##  [1] 2 2 2 2 2 1 1 1 2 1
+    ##  [1] 3 2 1 3 2 1 3 2 1 3
 
 Conclusion:
 
