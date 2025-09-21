@@ -1,0 +1,124 @@
+---
+title: "HW 1"
+output: github_document
+author: Disheng jiang
+Uni: dj2763
+---
+
+# Problem 1
+## 1st Step
+
+Loading library that going to used in the rest of problems
+```{r}
+library(moderndive) # provide data "early_january_weather"
+library(tidyverse) # dplyr/ggplot2/readr
+```
+
+Creating a dataset from moderndive library
+```{r}
+data("early_january_weather")
+```
+
+## 2nd Step
+
+Check all the variable names
+```{r}
+names(early_january_weather)
+```
+
+Check the column and row numbers (how many)
+```{r}
+nrow(early_january_weather)
+ncol(early_january_weather)
+```
+
+Calculate the mean of temperature
+```{r}
+mean(early_january_weather[["temp"]], na.rm = TRUE)
+```
+
+## Alternative way to get all the information above
+
+```{r}
+library(skimr)
+skim(early_january_weather)
+```
+
+## Conclusion
+
+a. Variables: origin, year, month, day, hour, temp(˚F), dewp(˚F), humid(%), wind_dir(˚), wind_speed(mph), wind_gust(mph), precip(inches), pressure(mbar), visib(miles), time_hour (total 15 variables).
+b. 358 rows and 15 columns.
+c. About average 39.58˚F.
+d. Scatter plot is in 3rd step
+
+## 3rd Step
+
+Visualize the time and temperature by scatter plot and save it
+```{r}
+ggplot(early_january_weather, aes ( x = time_hour ,  y = temp , color = humid )) +
+  geom_point(size = 4, alpha = 0.8, stroke = 0.05,) +
+  labs(title = "Scatter Plot",
+       subtitle = "Temperature(˚F) vs. Time(hours)",
+       x = "Temp (˚F)",
+       y = "Hour(s)",
+       color = "Humid %"
+       ) 
+ggsave("scatter_plot.png", dpi = 600, path = "~/p8105_hw1")
+```
+
+# Problem 2
+## 1st Step
+Create a dataframe
+
+```{r}
+data_df = tibble(
+  norm_sample= rnorm(10), # A random sample of size 10 from a standard Normal distribution
+  
+  vec_logical = c( TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE), 
+  # A logical vector indicating whether elements of the sample are greater than 0
+  
+  vec_char = c("Alvin", "Sunny", "Justin", "Jeff", "Sky", "Rachel", "Maria", "Susan", "Jordan", "Morgan"), # A character vector of length 10
+  
+  vec_factor = factor(c("male", "male", "male", "male", "male", "female", "female", "female", "male", "female"))) # A factor vector of length 10, with 3 different factor “levels”
+```
+
+## Q2: Try to take the mean of each variable in your dataframe. What works and what doesn’t?
+
+Taking the mean of a variable in a dataframe by using the pull function
+```{r}
+mean(data_df |>  pull(norm_sample)) # Value is working
+mean(data_df |>  pull(vec_logical)) # Logical is working
+mean(data_df |>  pull(vec_char)) # Character is not working
+mean(data_df |>  pull(vec_factor)) # Factor is not working
+```
+Conclusion: Only numerical value is working with mean and pull function
+
+## Q3: What happens, and why? 
+
+Applying the as.numeric function to the logical, character, and factor variables
+```{r}
+as.numeric(data_df |>  pull(vec_logical)) # Logical is working
+as.numeric(data_df |>  pull(vec_char)) # Character is not working (NA returns)
+as.numeric(data_df |>  pull(vec_factor)) # Factor is partially working (return internal encoding)
+```
+Conclusion:
+
+Logical: 1=TRUE, 0=FALSE.
+
+Character: Reports an error message stating "NAs introduced by coercion" because character values cannot be directly converted to numeric values.
+
+Factor: Returns the internal encoding of the factor (1 and 2), not the actual names of the levels.
+
+## Q3 (continue):Does this help explain what happens when you try to take the mean?
+
+A:Yes, for numeric columns, mean is the regular mean. But for logical columns, R automatically interpret TRUE as 1 and FALSE as 0, so the average is calculated. If the value is more close to 1, the TUREs are more. And for character columns, mean reports an error because it cannot convert to numeric values. Last for factor columns, mean reports an error because factors are categorical and are not automatically converted to coded numeric values.
+
+## Summary
+
+The mean function is only works on numeric and logical data types.Character and factor values it won't automatically converted to numeric values. When we applied the mean function, it will return an error message. The as.numeric function reveals how R handles different data types internally.
+
+
+
+
+
+
