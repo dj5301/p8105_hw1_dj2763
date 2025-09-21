@@ -5,57 +5,39 @@ author: Disheng jiang
 Uni: dj2763
 ---
 
-# Problem 1
-## 1st Step
-
+# Loading Library
 Loading library that going to used in the rest of problems
 ```{r}
-library(moderndive) # provide data "early_january_weather"
+library(moderndive)  
+weather_df <- early_january_weather # provide data "early_january_weather" and rename it
+
 library(tidyverse) # dplyr/ggplot2/readr
 ```
 
-Creating a dataset from moderndive library
-```{r}
-data("early_january_weather")
-```
+# Problem 1
 
-## 2nd Step
+A: The data are from the moderndive library. After loading the library we want to use, we can load the dataset `r data("early_january_weather")`. 
 
-Check all the variable names
-```{r}
-names(early_january_weather)
-```
+This dataset contains `r nrow(early_january_weather)` rows and `r ncol(early_january_weather)` columns (358 and 15)
 
-Check the column and row numbers (how many)
-```{r}
-nrow(early_january_weather)
-ncol(early_january_weather)
-```
+The variable names are `r paste(names(early_january_weather)` (origin, year, month, day, hour, temp, dewp, humid, wind_dir, wind_speed, wind_gust, precip, pressure, visib, time_hour, 15 total). 
 
-Calculate the mean of temperature
-```{r}
-mean(early_january_weather[["temp"]], na.rm = TRUE)
-```
+The mean temperature is about `r mean(early_january_weather[["temp"]], na.rm = TRUE)` about average 39.58˚F.
+
 
 ## Alternative way to get all the information above
 
 ```{r}
 library(skimr)
-skim(early_january_weather)
+skim(weather_df)
 ```
 
-## Conclusion
-
-a. Variables: origin, year, month, day, hour, temp(˚F), dewp(˚F), humid(%), wind_dir(˚), wind_speed(mph), wind_gust(mph), precip(inches), pressure(mbar), visib(miles), time_hour (total 15 variables).
-b. 358 rows and 15 columns.
-c. About average 39.58˚F.
-d. Scatter plot is in 3rd step
-
-## 3rd Step
+## Plot
 
 Visualize the time and temperature by scatter plot and save it
 ```{r}
-ggplot(early_january_weather, aes ( x = time_hour ,  y = temp , color = humid )) +
+data("weather_df")
+ggplot(weather_df, aes ( x = time_hour ,  y = temp , color = humid )) +
   geom_point(size = 4, alpha = 0.8, stroke = 0.05,) +
   labs(title = "Scatter Plot",
        subtitle = "Temperature(˚F) vs. Time(hours)",
